@@ -1,262 +1,281 @@
-{=======================================================================}
-{   TMREnter                                                            }
-{                                                                       }
-{   Autor : Martins(martins@mrw.com.br)                                 }
-{                  (http://www.mrsoftware.com.br/user/martins)          }
-{           10/08/1997                                                  }
-{           S„o Paulo - Brazil                                          }
-{                                                                       }
-{   Colaboradores :                                                     }
-{           Dennis Rosa (dra@svn.com.br)                                }
-{           Mauricio Rother (mrother@plugon.com.br)                     }
-{           Paulo H. Trentin (phtrentin@feob.br)                        }
-{           Fernando Sarturi Prass (prass@unifra.br)                    }
-{=======================================================================}
-Historico / ChangeLog                                                             
-                     
-  15/04/2020 v 2.3
-  - Propriedade AutoSkip alterada para vir False por padr„o
-  - Propriedade KeyBoardArrows alterada para vir False por padr„o
-  - Suporte aos componentes da paleta Jedi e Raize:
-    Dica: Se vocÍ n„o utiliza esses componentes, apÛs adicionar o MREnter ao form principal, 
-          remova eles de dentro da "ClassList", isso far· a varredura ficar mais r·pida.
-    //Adicionados os cmponentes da paleta Jedi
-    Add('TJvEdit');
-    Add('TJvCalcEdit');
-    Add('TJvValidateEdit');
-    Add('TJvMaskEdit');
-    Add('TJvComboEdit');
-    Add('TJvFileNameEdit');
-    Add('TJvDirectoryEdit');
-    Add('TJvSpinEdit');
-    Add('TJvDatePickerEdit');
-    Add('TJvDateEdit');
-    Add('TJvDBEdit');
-    Add('TJvDBCalcEdit');
-    Add('TJvDBDatePickerEdit');
-    Add('TJvDBSpinEdit');
-    Add('TJvDBLookupEdit');
-    Add('TJvDBComboEdit');
-    Add('TJvDBDateEdit');
-    Add('TJvDBMaskEdit');
-    Add('TJvDBLookupComboEdit');
-    Add('TJvDBSearchEdit');
-    Add('TJvDBFindEdit');
 
-    //Suporte aos componentes Raize
-    Add('TRzDBEdit');
-    Add('TRzDBButtonEdit');
-    Add('TRzDBDateTimeEdit');
-    Add('TRzDBNumericEdit');
-    Add('TRzDBSpinEdit');
-    Add('TRzDBSpandEdit');
-    Add('TRzDBSpinner');
-    Add('TRzTBTrackBar');
-    Add('TRzDBDateTimePicker');
-    Add('TRzDBComboBox');
-    Add('TRzDBLookupComboBox');
-    Add('TRzDBCheckBox');
-    Add('TRzDBLookupDialog');
-    Add('TRzDBRadioGroup');
-    Add('TRzDBCheckBoxGroup');  
+------------
+
+
+```
+   TMREnter                                                            
+                                                                       
+   Autor : Martins(martins@mrw.com.br)                                 
+           (http://www.mrsoftware.com.br/user/martins)          
+           10/08/1997                                                  
+           S√£o Paulo - Brazil                                          
+                                                                       
+   Colaboradores :                                                     
+           Dennis Rosa (dra@svn.com.br)                                
+           Mauricio Rother (mrother@plugon.com.br)                     
+           Paulo H. Trentin (phtrentin@feob.br)                        
+           Fernando Sarturi Prass (prass@unifra.br)                    
+```
+
+------------
+
+
+# Historico / ChangeLog                                                             
                      
-  26/06/2001 V 2.2                                                    
-                                                                      
-  Mais Bugs ...                                                       
-  O focus control estava dando uns problemas com forms filhos         
-                                                                      
-  30/05/2001 V 2.1                                                    
-                                                                      
-  Um BUG introduzido nesta ultima versao fazia com que um erro de     
-  violacao de acesso fosse encontrado com controles do tipo Lookup    
-  e combo, foi corrigido...                                           
-  Obrigado pela forÁa Fernando !!!                                    
-                                                                      
-  30/05/2001 V 2.1                                                    
-                                                                      
-  Um BUG introduzido nesta ultima versao fazia com que um erro de     
-  violacao de acesso fosse encontrado com controles do tipo Lookup    
-  e combo, foi corrigido...                                           
-  Obrigado pela forÁa Fernando !!!                                    
-                                                                      
-  30/05/2001 V 2.0                                                    
-                                                                      
-  Pessoal, o LanÁamento da  versao 2.0 se deve ao fato de que         
-  varias das mudancas foram significativas no funcionamento do        
-  componente, claro que algumas coisas tambem foram bugs arrumados!   
-                                                                      
-  - ENTER --> ENTERENABLED                                            
-    A Propriedade ENABLED foi alterada para ENTERENABLED              
-    A funcionalidade permanece a mesma                                
-                                                                      
-  - COR EM FOCO                                                       
-    Quando a cor de um determinado edit era mudada para a cor do      
-    edit em foco, nao retornava mais para a cor original, ficava      
-    sempre na cor branca, agora a cor original e' guardada e recu-    
-    perada para o controle quando ele sai de foco.                    
-                                                                      
-  - SETA PARA CIMA EM GROUPBOX                                        
-    Em alguns casos, normalmente quando os edits estao dentro de      
-    containers como o GROUPBOX a seta para cima nao estava funcinando 
-    bem ... agora esta :))))                                          
-                                                                      
-  - EVENTO ONKEYDOWN                                                  
-    Desde a criaÁ„o do componente TMREnter eu tenho convivido com     
-    um problema chato, e quando o programador quer codificar alguma   
-    coisa no evento ONKEYDOWN para a tecla ENTER, n„o funcionava.     
-    Agora essa situaÁ„o È verificada, se o ENTER for precionado e     
-    existir algum evento codificado em ONKEYDOWN o TMRENTER vai deixar
-    passar esse ENTER para o evento, fica entao ao encargo do         
-    programador passar  ou nao para o proximo controle.               
-                                                                      
-  - PROCESSAMENTO DE HINT                                             
-    Agora existem mais duas propriedades no componente                
-      HintEnabled - Indica que o componente vai processar o Hint      
-      HintColor - Indica a cor que ser· utilizada para mostrar o      
-                  hint na tela                                        
-    Este processamento de Hint se da quando o componente no form      
-    recebe foco, independente se o Mouse esta ou nao sobre ele, isso  
-    difere do comportamento tradicional do Hint, mas fica bem ˙til    
-    em uma digitacao em serie.                                        
-                                                                      
-  Bem, estas foram as alteracoes e os novos recursos que o componente 
-  agora tem, se tiverem ideias legais por favor mandem varios emails  
-                                                                      
-  []s Martins                                                         
-                                                                      
-  10/02/2001 V 1.8                                                    
-                                                                      
+## 15/04/2020 v 2.3
+- Propriedade AutoSkip alterada para vir False por padr√£o
+- Propriedade KeyBoardArrows alterada para vir False por padr√£o
+- Suporte aos componentes da paleta Jedi e Raize:
+Dica: Se voc√™ n√£o utiliza esses componentes, ap√≥s adicionar o MREnter ao form principal, 
+      remova eles de dentro da "ClassList", isso far√° a varredura ficar mais r√°pida.
+//Adicionados os cmponentes da paleta Jedi
+Add('TJvEdit');
+Add('TJvCalcEdit');
+Add('TJvValidateEdit');
+Add('TJvMaskEdit');
+Add('TJvComboEdit');
+Add('TJvFileNameEdit');
+Add('TJvDirectoryEdit');
+Add('TJvSpinEdit');
+Add('TJvDatePickerEdit');
+Add('TJvDateEdit');
+Add('TJvDBEdit');
+Add('TJvDBCalcEdit');
+Add('TJvDBDatePickerEdit');
+Add('TJvDBSpinEdit');
+Add('TJvDBLookupEdit');
+Add('TJvDBComboEdit');
+Add('TJvDBDateEdit');
+Add('TJvDBMaskEdit');
+Add('TJvDBLookupComboEdit');
+Add('TJvDBSearchEdit');
+Add('TJvDBFindEdit');
+
+//Suporte aos componentes Raize
+Add('TRzDBEdit');
+Add('TRzDBButtonEdit');
+Add('TRzDBDateTimeEdit');
+Add('TRzDBNumericEdit');
+Add('TRzDBSpinEdit');
+Add('TRzDBSpandEdit');
+Add('TRzDBSpinner');
+Add('TRzTBTrackBar');
+Add('TRzDBDateTimePicker');
+Add('TRzDBComboBox');
+Add('TRzDBLookupComboBox');
+Add('TRzDBCheckBox');
+Add('TRzDBLookupDialog');
+Add('TRzDBRadioGroup');
+Add('TRzDBCheckBoxGroup');  
+                     
+## 26/06/2001 V 2.2                                                    
+      
+Mais Bugs ...                                                       
+O focus control estava dando uns problemas com forms filhos         
+        
+## 30/05/2001 V 2.1                                                    
+        
+Um BUG introduzido nesta ultima versao fazia com que um erro de     
+violacao de acesso fosse encontrado com controles do tipo Lookup    
+e combo, foi corrigido...                                           
+Obrigado pela for√ßa Fernando !!!                                    
+        
+## 30/05/2001 V 2.1                                                    
+      
+Um BUG introduzido nesta ultima versao fazia com que um erro de     
+violacao de acesso fosse encontrado com controles do tipo Lookup    
+e combo, foi corrigido...                                           
+Obrigado pela for√ßa Fernando !!!                                    
+        
+## 30/05/2001 V 2.0                                                    
+        
+Pessoal, o Lan√ßamento da  versao 2.0 se deve ao fato de que         
+varias das mudancas foram significativas no funcionamento do        
+componente, claro que algumas coisas tambem foram bugs arrumados!   
+      
+- ENTER --> ENTERENABLED                                            
+  A Propriedade ENABLED foi alterada para ENTERENABLED              
+  A funcionalidade permanece a mesma                                
+      
+- COR EM FOCO                                                       
+  Quando a cor de um determinado edit era mudada para a cor do      
+  edit em foco, nao retornava mais para a cor original, ficava      
+  sempre na cor branca, agora a cor original e' guardada e recu-    
+  perada para o controle quando ele sai de foco.                    
+      
+- SETA PARA CIMA EM GROUPBOX                                        
+  Em alguns casos, normalmente quando os edits estao dentro de      
+  containers como o GROUPBOX a seta para cima nao estava funcinando 
+  bem ... agora esta :))))                                          
+      
+- EVENTO ONKEYDOWN                                                  
+  Desde a cria√ß√£o do componente TMREnter eu tenho convivido com     
+  um problema chato, e quando o programador quer codificar alguma   
+  coisa no evento ONKEYDOWN para a tecla ENTER, n√£o funcionava.     
+  Agora essa situa√ß√£o √© verificada, se o ENTER for precionado e     
+  existir algum evento codificado em ONKEYDOWN o TMRENTER vai deixar
+  passar esse ENTER para o evento, fica entao ao encargo do         
+  programador passar  ou nao para o proximo controle.               
+
+- PROCESSAMENTO DE HINT
+  Agora existem mais duas propriedades no componente                
+    HintEnabled - Indica que o componente vai processar o Hint
+    HintColor - Indica a cor que ser√° utilizada para mostrar o
+    hint na tela
+  Este processamento de Hint se da quando o componente no form      
+  recebe foco, independente se o Mouse esta ou nao sobre ele, isso  
+  difere do comportamento tradicional do Hint, mas fica bem √∫til
+  em uma digitacao em serie.
+
+Bem, estas foram as alteracoes e os novos recursos que o componente 
+agora tem, se tiverem ideias legais por favor mandem varios emails  
+
+## 10/02/2001 V 1.8                                                    
+        
   - so uma correcao de bug introduzido na retirada do plim            
   Preciso de novas ideias do que fazer com o componente  :))))        
-                                                                      
+        
   []s Martins                                                         
-                                                                      
-  21/12/2000 V 1.7                                                    
-                                                                      
+        
+## 21/12/2000 V 1.7                                                    
+        
   - Foi implementada a capacidade de o ENTER funcionar como PROXI-    
     MA CELULA em um GRID.                                             
   - Aquele PLIM que ocorria hora ou outra foi suprimido.              
-                                                                      
+        
   []s Martins                                                         
-                                                                      
-  19/10/2000 V 1.6                                                    
-  Como nada nesse mundo È perfeito eu tinha de deixar passar alguma   
+        
+## 19/10/2000 V 1.6                                                    
+  Como nada nesse mundo √© perfeito eu tinha de deixar passar alguma   
   coisa errada.                                                       
-                                                                      
+        
   - quando maxlength estava setado e o usuario retornava no campo     
     usando Backspace ele pulava para o proximo campo                  
-  - foi otimizado o reconhecimento da propriedade COLOR, n„o tem      
+  - foi otimizado o reconhecimento da propriedade COLOR, n√£o tem      
     mais flick.                                                       
   - FocusControl funciona com qualquer componente que tenha a pro-    
-    priedade color e n„o apenas com TEdit e TDBEdit                   
-                                                                      
+    priedade color e n√£o apenas com TEdit e TDBEdit                   
+        
   []s Martins                                                         
-                                                                      
-  17/10/2000 V 1.5                                                    
+        
+## 17/10/2000 V 1.5                                                    
   Depois de um longo e tenebroso inverno eu consegui alterar algumas  
   coisas no componente, acho que esta melhor, testei por aqui nas     
-  versıes do Delphi 1,2,3,4 e 5  e esta funcionando legal, sÛ em      
-  Delphi 1 que nao esta l· essas coisas, mas esta cada vez mais       
+  vers√µes do Delphi 1,2,3,4 e 5  e esta funcionando legal, s√≥ em      
+  Delphi 1 que nao esta l√° essas coisas, mas esta cada vez mais       
   dificil manter a compatibilidade ...                                
-                                                                      
+        
   Novas propriedades                                                  
     FocusEnabled                 Quando um TEdit ou TDBEdit           
                                  receber foco se deve destacar dos    
                                  demais                               
     FocusColor                   Cor de destaque                      
-                                                                      
-  As setas est„o funcionando :)                                       
-                                                                      
-  Quando seleciona AutoSkip o proximo edit È selecionado quando o     
-  edit atual esta totalmente completo e n„o no primeiro caracter do   
+        
+  As setas est√£o funcionando :)                                       
+        
+  Quando seleciona AutoSkip o proximo edit √© selecionado quando o     
+  edit atual esta totalmente completo e n√£o no primeiro caracter do   
   proximo campo                                                       
-  []s                                                                 
-                                                                      
-  22/05/1999 V 1.4                                                    
-  Foi incluida uma nova funcionalidade, quando um derivado de TCustom 
-  edit chega ao final de seu limite do numero de caracteres ent„o ele 
-  passa para o prÛximo controle automaticamente.                      
-  Para ativar esta funcionalidade deve-se setar AutoSkip para true, o 
-  default È false.               
+  []s   
+        
+## 22/05/1999 V 1.4  
+                                                  
+Foi incluida uma nova funcionalidade, quando um derivado de TCustom 
+edit chega ao final de seu limite do numero de caracteres ent√£o ele 
+passa para o pr√≥ximo controle automaticamente.                      
+Para ativar esta funcionalidade deve-se setar AutoSkip para true, o 
+default √© false.               
 
-  Suporte aos componentes do RxLib:  
-    Paulo H. Trentin               
-    www.rantac.com.br/users/phtrentin      
-  Add('TRxDBLookupList');             
-  Add('TRxDBGrid');                                                   
-  Add('TRxDBLookupCombo');       
-  Add('TRxDBCalcEdit');          
-  Add('TRxDBComboBox');                                               
-  Add('TRxDBComboEdit');                                              
-  Add('TDBDateEdit');                                                 
-  Add('TRxCalcEdit');                                                 
-  Add('TCurrencyEdit');                                               
-  Add('TRxLookupEdit');                                               
-                                                                      
-  03/03/1999 V 1.3                                                    
-  Foi incluida uma propriedade chamada                                
-  KeyBoardArrows : Boolean                                            
-  esta propriedade quando true permite voltar um componente ou avanÁar
-  utilizando as setas no teclado, simulando TAB e SHIFT TAB           
-  Infelizmente estou tendo problemas para simular o SHIFT TAB em D1   
-  mas funciona perfeitamente em D2, D3 e D4 ...                       
-  Como diversas pessoas utilizam o InfoPower os seus componentes mais 
-  comuns foram incluidos automaticamente no create                    
-  TwwDBGrid                      Suporte aos componentes do InfoPower 
-  TwwDBEdit                      J· que tem um monte de gente que usa 
-  TwwDBComboBox                  achei por bem deixar todos disponÌ-  
-  TwwDBSpinEdit                  veis durante a criaÁ„o do componen-  
-  TwwDBComboDlg                  te, assim como os outros ....        
-  TwwDBLookupCombo                                                    
-  TwwDBLookupComboDlg            ideia do Dennis ...                  
-  TwwIncrementalSearch           valeu ...                            
-  TwwDBRitchEdit                 02/03/1999                           
-  TwwKeyCombo                                                         
-  Neste pacote esta sendo uncluido um arquivo .RES com um icone de    
-  instalaÁ„o do componente que foi feito pelo Mauricio                
-  Este arquivo esta em 16 bits por motivo de compatibilidade, caso    
-  o seu Delphi seja de 32 bits, abra o arquivo no Image Editor e      
-  salve novamente. Valeu Mauricio...                                  
-                                                                      
-  17/10/1998 V 1.2                                                    
-  Atendendo pedidos, outros eventos foram incluidos                   
-                                                                      
-  OnHint                                                              
-  OnHelp                                                              
-                                                                      
-  03/10/1998 V 1.1                                                    
-  Foram incluidos os eventos padr„o de TApplication, assim            
-  pode-se escrever diretamente para estes eventos e n„o mais          
-  apenas via codigo. S„o eles ...                                     
-                                                                      
-  OnMessage                                                           
-  OnIdle                                                              
-                                                                      
-  13/09/1998                                                          
-  Substitui a aÁ„o da tecla TAB por um ENTER em todos os forms        
-  pertencentes a TApplication.                                        
-                                                                      
-  ClassList                                                           
-  Armazena os nomes das classes em que este componente vai            
-  atuar, as classes abaixo j· est„o registradas de fabrica :)         
-                                                                      
-  TMaskEdit                                                           
-  TEdit                                                               
-  TDBEdit                                                             
-  TDBCheckBox                                                         
-  TTabbedNoteBook                                                     
-  TDBCheckDocEdit                                                     
-  TMRDBExtEdit                                                        
-  TDBDateEdit                                                         
-======================================================================
-  NOTA                                                                
-  Obrigado a todos os amigos que mandaram suas ideias e colaboraÁıes, 
+Suporte aos componentes do RxLib:  
+  Paulo H. Trentin               
+  www.rantac.com.br/users/phtrentin      
+Add('TRxDBLookupList');             
+Add('TRxDBGrid');                                                   
+Add('TRxDBLookupCombo');       
+Add('TRxDBCalcEdit');          
+Add('TRxDBComboBox');                                               
+Add('TRxDBComboEdit');                                              
+Add('TDBDateEdit');                                                 
+Add('TRxCalcEdit');                                                 
+Add('TCurrencyEdit');                                               
+Add('TRxLookupEdit');                                               
+        
+## 03/03/1999 V 1.3 
+                                                   
+Foi incluida uma propriedade chamada                                
+KeyBoardArrows : Boolean                                            
+esta propriedade quando true permite voltar um componente ou avan√ßar
+utilizando as setas no teclado, simulando TAB e SHIFT TAB           
+Infelizmente estou tendo problemas para simular o SHIFT TAB em D1   
+mas funciona perfeitamente em D2, D3 e D4 ...                       
+Como diversas pessoas utilizam o InfoPower os seus componentes mais 
+comuns foram incluidos automaticamente no create  
+Suporte aos componentes do InfoPower 
+J√° que tem um monte de gente que usa 
+achei por bem deixar todos dispon√≠-  
+veis durante a cria√ß√£o do componen-  
+te, assim como os outros, ideia do Dennis, valeu. 02/03/1999                       
+TwwDBGrid                      
+TwwDBEdit                      
+TwwDBComboBox                  
+TwwDBSpinEdit                  
+TwwDBComboDlg                  
+TwwDBLookupCombo                                                    
+TwwDBLookupComboDlg                              
+TwwIncrementalSearch           
+TwwDBRitchEdit                                            
+TwwKeyCombo                                                         
+Neste pacote esta sendo uncluido um arquivo .RES com um icone de    
+instala√ß√£o do componente que foi feito pelo Mauricio                
+Este arquivo esta em 16 bits por motivo de compatibilidade, caso    
+o seu Delphi seja de 32 bits, abra o arquivo no Image Editor e      
+salve novamente. Valeu Mauricio...                                  
+        
+## 17/10/1998 V 1.2    
+                                                
+Atendendo pedidos, outros eventos foram incluidos                   
+      
+OnHint
+OnHelp
+        
+## 03/10/1998 V 1.1  
+                                                  
+Foram incluidos os eventos padr√£o de TApplication, assim            
+pode-se escrever diretamente para estes eventos e n√£o mais          
+apenas via codigo. S√£o eles ...                                     
+      
+OnMessage                                                           
+OnIdle
+        
+## 13/09/1998 v 1.0  
+                                                        
+Substitui a a√ß√£o da tecla TAB por um ENTER em todos os forms        
+pertencentes a TApplication.                                        
+      
+ClassList                                                           
+Armazena os nomes das classes em que este componente vai            
+atuar, as classes abaixo j√° est√£o registradas de fabrica :)         
+        
+TMaskEdit                                                           
+TEdit 
+TDBEdit                                                             
+TDBCheckBox                                                         
+TTabbedNoteBook                                                     
+TDBCheckDocEdit                                                     
+TMRDBExtEdit                                                        
+TDBDateEdit                                                         
+  
+
+------------
+
+
+#  NOTA  
+  Obrigado a todos os amigos que mandaram suas ideias e colabora√ß√µes, 
   claro que todos temos nossos compromissos e dedicar um pouco do     
-  tempo de vocÍs para colaborar com o desenvolvimento deste componen- 
+  tempo de voc√™s para colaborar com o desenvolvimento deste componen- 
   te me deixa muito orgulhoso dos amigos que tenho e me lembra que a  
-  vida È feita de atitudes e n„o apenas de boas intenÁıes.            
-                                                                      
-  Um grande abraÁo a todos ...                                        
+  vida √© feita de atitudes e n√£o apenas de boas inten√ß√µes.            
+        
+  Um grande abra√ßo a todos ...                                        
   Martins                                                             
   martins@mrsoftware.com.br                                           
-======================================================================
