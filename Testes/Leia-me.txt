@@ -1,0 +1,2 @@
+Projeto de testes rápidos.
+Usando os componentes das paletas Jedi, Raize, RxLib, DevExpress e nativas.
