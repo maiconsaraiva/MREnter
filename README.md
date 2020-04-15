@@ -12,7 +12,8 @@ Apenas um TMREnter deve ser utilizado por aplicação e posicionado no form prin
 5. Agora basta abrri seu projeto, e no form principal, adicionar o novo componente MREnter, em seguida, configure como desejado;
 
 # Documentação
-[.gitignore](MREnter - Documentacao.pdf "MREnter - Documentacao")
+[MREnter - Documentacao.pdf]("MREnter - Documentacao.pdf" "MREnter - Documentacao")
+[MREnter - Documentacao](http://maxproerp.com.br "MREnter - Documentacao")
 
 # Changelog
 [MREnter - Changelog.md](MREnter - Changelog.md)
