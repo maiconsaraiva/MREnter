@@ -12,8 +12,8 @@ Apenas um TMREnter deve ser utilizado por aplicação e posicionado no form prin
 5. Agora basta abrri seu projeto, e no form principal, adicionar o novo componente MREnter, em seguida, configure como desejado;
 
 ## Documentação
-[Doc/MREnter-Documentacao.pdf](../../raw/<branch>/Doc/MREnter-Documentacao.pdf)
-(recomendo que faça o download e abra em um leitor como o AdobeReader para poder navegar entre os tópicos)
+[Doc/MREnter-Documentacao.pdf](Doc/MREnter-Documentacao.pdf)
+(recomendo que, ao acessar o link, clique em "Download" e baixe o arquivo para abrir em um leitor como o AdobeReader e poder navegar entre os tópicos)
 
 ## Changelog (Histórico de alterações)
 [Doc/MREnter-Changelog.md](Doc/MREnter-Changelog.md)
