@@ -4,6 +4,10 @@ O Componente MREnter (TMREnter) foi desenvolvido originalmente para facilitar a 
 TMREnter captura o evento padrão OnMessage de TApplication e faz com que o processamento da tecla ENTER seja trocado para o processamento da tecla TAB, o Windows assim responde corretamente ao evento.
 Apenas um TMREnter deve ser utilizado por aplicação e posicionado no form principal.
 
+Autor Original: Martins(martins@mrw.com.br)                                 
+Ano: 10/08/1997
+Local: São Paulo - Brazil
+
 ## Instalação
 1. Abra o Delphi, adicione o a pasta MREnter ao Library Path x32
 2. Abra o MREnter.dpk;
