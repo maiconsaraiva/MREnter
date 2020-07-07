@@ -21,6 +21,15 @@
 
 
 # Historico / ChangeLog                                                             
+
+## 07/07/2020 v 2.3
++ Adição das classes TComboBox e TDBComboBox na lista padrão de classes monitoradas.
+  (obs: Se você já usava o MREnter, precisará adicionar manualmente essas classes 
+   na "ClassList" do MrEnter que foi adicionado ao formulário)
+~ Adicionada exceção ao acionamento do "Enter as Tab" quando o evento OnKeyPress estiver sendo usado também
+  (ou seja, quando tiver código em um destes dois eventos, precisará controlar o "Enter as Tab" manualmente.   
+~ Pequena correção para evitar erro de violação da memória, quando o 
+  Windows não consegue detectar quem é o próximo formulário a receber o foco.
                      
 ## 15/04/2020 v 2.3
 - Propriedade AutoSkip alterada para vir False por padrão

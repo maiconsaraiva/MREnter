@@ -124,6 +124,8 @@ begin
     Add('TDBEdit');
     Add('TDBCheckBox');
     Add('TTabbedNoteBook');
+    Add('TComboBox');
+    Add('TDBComboBox');
     //Add('TStringGrid');            { Suporte ao tratamento de Grids       }
     //Add('TDrawGrid');
     //Add('TDBGrid');
@@ -257,6 +259,7 @@ var
   pMaxLengthPropInfo,
   pColorPropInfo,
   pOnKeyDownPropInfo,
+  pOnKeyPressPropInfo,
   pColPropInfo,
   pColCountPropInfo : PPropInfo;
   intMaxLength,
@@ -266,7 +269,10 @@ var
   bCheckClassList : Boolean;
 begin
 
-  bCheckClassList := CheckClassList( Screen.ActiveControl.ClassName );
+  if Screen.ActiveControl <> nil then  
+    bCheckClassList := CheckClassList( Screen.ActiveControl.ClassName )
+  else
+    bCheckClassList := False;
 
   if ( FFocusEnabled ) then
   begin
@@ -346,15 +352,18 @@ begin
                   else
                   begin
                     pOnKeyDownPropInfo := GetPropInfo( Screen.ActiveControl.ClassInfo, 'OnKeyDown' );
-                    //pOnKeyDownPropInfo := GetPropInfo( Screen.ActiveControl, 'OnKeyDown' );
+                    pOnKeyPressPropInfo:= GetPropInfo( Screen.ActiveControl.ClassInfo, 'OnKeyPress' );
+
                     if ( Screen.ActiveControl is TCustomComboBox ) then
                     begin
                       if not ( Screen.ActiveControl as TCustomComboBox ).DroppedDown then Msg.wParam := VK_TAB;
                     end
                     else
-                      if ( pOnKeyDownPropInfo <> nil ) then
+                      if ( pOnKeyDownPropInfo <> nil ) and (pOnKeyPressPropInfo <> nil) then
                       begin
-                        if ( GetOrdProp( Screen.ActiveControl, pOnKeyDownPropInfo ) = 0 ) then
+                        if ( GetOrdProp( Screen.ActiveControl, pOnKeyDownPropInfo ) = 0 )
+                          and ( GetOrdProp( Screen.ActiveControl, pOnKeyPressPropInfo ) = 0 )
+                        then
                           Msg.wParam := VK_TAB;
                       end
                       else
