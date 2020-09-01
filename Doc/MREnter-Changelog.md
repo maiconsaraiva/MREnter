@@ -20,7 +20,59 @@
 ------------
 
 
-# Historico / ChangeLog                                                             
+# Historico / ChangeLog  
+
+## 31/08/2020 - v 2.4
++ Adicionado o suporte aos componentes da DevExpress (eles não são capturados pelo ActiveControl como os demais, por isso, precisaram de um tratamento especial)
+Obs: Se você já usa o MREnter, precisará adicionar manualmente as classes da DevExpress (que deseja que o MREnter controle) dentro da propriedade 
+"ClassList" do TMREnter do seu projeto.
+
+Lista de Classes:
+============================
+TcxTextEdit
+TcxComboBox
+TcxLookupComboBox
+TcxCheckBox
+TcxDateEdit
+TcxCalcEdit
+TcxCurrencyEdit
+TcxCheckComboBox
+TcxSpinEdit
+TcxTimeEdit
+TcxButtonEdit
+TcxMaskEdit
+TcxHyperLinkEdit
+TcxFontNameComboBox
+TcxColorComboBox
+TcxShellComboBox
+TcxImageComboBox
+TcxMRUEdit
+TcxPopupEdit
+
+TcxDBTextEdit
+TcxDBComboBox
+TcxDBLookupComboBox
+TcxDBCheckBox
+TcxDBDateEdit
+TcxDBCalcEdit
+TcxDBCurrencyEdit
+TcxDBCheckComboBox
+TcxDBSpinEdit
+TcxDBTimeEdit
+TcxDBButtonEdit
+TcxDBMaskEdit
+TcxDBHyperLinkEdit
+TcxDBFontNameComboBox
+TcxDBColorComboBox
+TcxDBShellComboBox
+TcxDBImageComboBox
+TcxDBMRUEdit
+TcxDBPopupEdit
+
+Mais detalhes sobre esse comportamento dos componentes da DevExpress (não ser possível acessar pelo ActiveControl) podem ser vistos nos Links abaixo:
+- https://supportcenter.devexpress.com/Ticket/Details/Q271132/how-to-get-real-activecontrol
+- https://supportcenter.devexpress.com/ticket/details/a1102/how-to-obtain-the-cx-editor-corresponding-to-the-activecontrol-property
+                                                           
 
 ## 07/07/2020 v 2.3
 + Adição das classes TComboBox e TDBComboBox na lista padrão de classes monitoradas.

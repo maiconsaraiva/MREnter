@@ -21,10 +21,3 @@ Local: São Paulo - Brazil
 
 ## Changelog (Histórico de alterações)
 [Doc/MREnter-Changelog.md](Doc/MREnter-Changelog.md)
-
-## ToDo
-- Falta criar tratamento (ou extensão do componente) para compatibilizar com os componentes da DevExpress.
-Eles não são capturados pelo ActiveControl como os demais, por isso precisam de um tratamento especial.
-Mais detalhes nos Links abaixo:
- - https://supportcenter.devexpress.com/Ticket/Details/Q271132/how-to-get-real-activecontrol
- - https://supportcenter.devexpress.com/ticket/details/a1102/how-to-obtain-the-cx-editor-corresponding-to-the-activecontrol-property

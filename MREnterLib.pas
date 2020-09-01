@@ -8,6 +8,8 @@ uses
 
 {$R MREnterLib.res}
 
+function ObjectInheritsFrom(AObj: TObject; AClassName: String): Boolean;
+
 type
 
   TMREnter = class(TComponent)
@@ -199,6 +201,48 @@ begin
     Add('TRzDBRadioGroup');
     Add('TRzDBCheckBoxGroup');
 
+    //31/08/2020 - Suporte aos Componentes da DevExpress
+    Add('============================');
+    Add('TcxTextEdit');
+    Add('TcxComboBox');
+    Add('TcxLookupComboBox');
+    Add('TcxCheckBox');
+    Add('TcxDateEdit');
+    Add('TcxCalcEdit');
+    Add('TcxCurrencyEdit');
+    Add('TcxCheckComboBox');
+    Add('TcxSpinEdit');
+    Add('TcxTimeEdit');
+    Add('TcxButtonEdit');
+    Add('TcxMaskEdit');
+    Add('TcxHyperLinkEdit');
+    Add('TcxFontNameComboBox');
+    Add('TcxColorComboBox');
+    Add('TcxShellComboBox');
+    Add('TcxImageComboBox');
+    Add('TcxMRUEdit');
+    Add('TcxPopupEdit');
+    Add('');
+    Add('TcxDBTextEdit');
+    Add('TcxDBComboBox');
+    Add('TcxDBLookupComboBox');
+    Add('TcxDBCheckBox');
+    Add('TcxDBDateEdit');
+    Add('TcxDBCalcEdit');
+    Add('TcxDBCurrencyEdit');
+    Add('TcxDBCheckComboBox');
+    Add('TcxDBSpinEdit');
+    Add('TcxDBTimeEdit');
+    Add('TcxDBButtonEdit');
+    Add('TcxDBMaskEdit');
+    Add('TcxDBHyperLinkEdit');
+    Add('TcxDBFontNameComboBox');
+    Add('TcxDBColorComboBox');
+    Add('TcxDBShellComboBox');
+    Add('TcxDBImageComboBox');
+    Add('TcxDBMRUEdit');
+    Add('TcxDBPopupEdit');
+
 
 
   end;
@@ -266,17 +310,57 @@ var
   intSelStart,
   intCol,
   intColCount       : integer;
-  bCheckClassList : Boolean;
+  bCheckClassList, Is_cxCustomEdit : Boolean;
+  wActiveControl : TWinControl;
+  Obj : TObject;
 begin
 
-  if Screen.ActiveControl <> nil then  
-    bCheckClassList := CheckClassList( Screen.ActiveControl.ClassName )
-  else
+
+  Is_cxCustomEdit := False;
+  if Screen.ActiveControl <> nil then
+  begin
     bCheckClassList := False;
+    wActiveControl := Screen.ActiveControl;
+
+    if CheckClassList( Screen.ActiveControl.ClassName ) then
+    begin
+      bCheckClassList := True;
+      wActiveControl := Screen.ActiveControl;
+    end
+    else
+      {Tratamento feito para comportar componentes da DevExpress
+
+      "When a TcxDBTextEdit is focused, the Screen.ActiveControl has the type TcxCustomInnerTextEdit.
+      In my opinion, the ActiveControl should be of the type TcxDBTextEdit.
+      How else could I determine if ActiveControl is of the type TcxTextEdit or TcxDBTextEdit?"
+
+      Answer:
+      By design, our editors are wrappers (to support CX styles) for inner editors which implement
+      the editing functionality. You may use code similar to the following to obtain the editor
+      corresponding to a particular inner control.
+      Fonte: https://supportcenter.devexpress.com/ticket/details/a1102
+      }
+      //Se Owner existir e herdar de "TcxCustomEdit" então o tratamento deverá ser feito no Screen.ActiveControl.Owner
+      // e não em Screen.ActiveControl
+      if (not bCheckClassList) and (Screen.ActiveControl.Owner <> nil) then
+        if (Screen.ActiveControl.Owner is TWinControl) then
+          if ObjectInheritsFrom(Screen.ActiveControl.Owner, 'TcxCustomEdit') then
+          begin
+            bCheckClassList := CheckClassList( Screen.ActiveControl.Owner.ClassName );
+            if bCheckClassList then
+              wActiveControl := Screen.ActiveControl.Owner as TWinControl; //ActiveControl da DevExpress
+            Is_cxCustomEdit := True;
+          end;
+  end
+  else
+  begin
+    bCheckClassList := False;
+    wActiveControl := nil;
+  end;
 
   if ( FFocusEnabled ) then
   begin
-    if ( FActiveControl <> Screen.ActiveControl ) then
+    if ( FActiveControl <> wActiveControl ) then
     begin
 
       //
@@ -291,9 +375,9 @@ begin
       //
       // Changed = ActiveControl
       //
-      if FActiveControl <> Screen.ActiveControl then
+      if FActiveControl <> wActiveControl then
       begin
-        FActiveControl := Screen.ActiveControl;
+        FActiveControl := wActiveControl;
         DoShowHint(FActiveControl);
       end;
 
@@ -310,7 +394,17 @@ begin
         begin
           pColorPropInfo := GetPropInfo( FFocusControl.ClassInfo, 'Color' );
           if ( pColorPropInfo <> nil ) then
-            SetOrdProp( FFocusControl, 'Color', FFocusColorReturn );
+            SetOrdProp( FFocusControl, 'Color', FFocusColorReturn )
+          else
+          if Is_cxCustomEdit then
+          begin
+            {Tratamento para componentes da DevExpress (não possuem a propriedade "Color", e sim
+            "StyleFocused (TcxStyle) e dentro dela tem a Color que define a cor quando o objeto está em foco}
+            Obj := GetObjectProp(FFocusControl, 'StyleFocused');  //StyleFocused : TcxStyle
+            if Obj <> nil then
+              if GetPropInfo(Obj, 'Color' ) <> nil then
+                SetPropValue(Obj, 'Color', FFocusColorReturn );
+          end;
         end;
         FFocusControl := nil;
       end;
@@ -320,7 +414,7 @@ begin
       //
 
       if bCheckClassList then
-        FFocusControl := Screen.ActiveControl else FFocusControl := nil;
+        FFocusControl := wActiveControl else FFocusControl := nil;
 
       //
       // Set the Focus Color to new control
@@ -332,6 +426,16 @@ begin
         begin
           FFocusColorReturn := GetOrdProp( FFocusControl, pColorPropInfo );
           SetOrdProp( FFocusControl, 'Color', FFocusColor );
+        end
+        else
+        if Is_cxCustomEdit then
+        begin
+          {Tratamento para componentes da DevExpress (não possuem a propriedade "Color", e sim
+          "StyleFocused (TcxStyle) e dentro dela tem a Color que define a cor quando o objeto está em foco}
+          Obj := GetObjectProp(FFocusControl, 'StyleFocused');  //StyleFocused : TcxStyle
+          if Obj <> nil then
+            if GetPropInfo(Obj, 'Color' ) <> nil then
+              SetPropValue(Obj, 'Color', FFocusColor );
         end;
       end;
 
@@ -340,49 +444,41 @@ begin
 
   if FEnterEnabled then
   if Screen <> nil then
-  if Screen.ActiveControl <> nil then
+  if wActiveControl <> nil then
   if ( ( Msg.message = WM_KeyDown ) and ( bCheckClassList ) ) then
   begin
     case Msg.wParam of
-      VK_Return:  if ( Screen.ActiveControl is TCustomGrid ) then
+      VK_Return:  if ( wActiveControl is TCustomGrid ) then
                   begin
-                    if ( Screen.ActiveControl is TDBGrid ) then Msg.wParam := VK_TAB
+                    if ( wActiveControl is TDBGrid ) then Msg.wParam := VK_TAB
                     else Msg.wParam := VK_Right;
                   end
                   else
                   begin
-                    pOnKeyDownPropInfo := GetPropInfo( Screen.ActiveControl.ClassInfo, 'OnKeyDown' );
-                    pOnKeyPressPropInfo:= GetPropInfo( Screen.ActiveControl.ClassInfo, 'OnKeyPress' );
+                    pOnKeyDownPropInfo := GetPropInfo( wActiveControl, 'OnKeyDown' );
+                    pOnKeyPressPropInfo:= GetPropInfo( wActiveControl, 'OnKeyPress' );
 
-                    if ( Screen.ActiveControl is TCustomComboBox ) then
+                    if ( wActiveControl is TCustomComboBox ) then
                     begin
-                      if not ( Screen.ActiveControl as TCustomComboBox ).DroppedDown then Msg.wParam := VK_TAB;
+                      if not ( wActiveControl as TCustomComboBox ).DroppedDown then Msg.wParam := VK_TAB;
                     end
                     else
                       if ( pOnKeyDownPropInfo <> nil ) and (pOnKeyPressPropInfo <> nil) then
                       begin
-                        if ( GetOrdProp( Screen.ActiveControl, pOnKeyDownPropInfo ) = 0 )
-                          and ( GetOrdProp( Screen.ActiveControl, pOnKeyPressPropInfo ) = 0 )
+                        if ( GetOrdProp( wActiveControl, pOnKeyDownPropInfo ) = 0 )
+                          and ( GetOrdProp( wActiveControl, pOnKeyPressPropInfo ) = 0 )
                         then
                           Msg.wParam := VK_TAB;
-                      end
-                      else
-                      begin
-//                      ToDo: Criar tratamento para os componentes da DevExpress:
-//                      https://supportcenter.devexpress.com/ticket/details/a1102/how-to-obtain-the-cx-editor-corresponding-to-the-activecontrol-property
-//                      //Tratamento específico para os componentes cxGrid / DevExpress
-//                       if Screen.ActiveControl.ClassName='TcxCustomInnerTextEdit' then //
-//                         Msg.wParam := VK_TAB;
                       end;
 
                   end;
       VK_Down  :  if (FKeyBoardArrows) and
-                     not( Screen.ActiveControl is TCustomGrid ) and
-                     not( Screen.ActiveControl is TCustomComboBox ) then
+                     not( wActiveControl is TCustomGrid ) and
+                     not( wActiveControl is TCustomComboBox ) then
                     Msg.wParam := VK_TAB;
       VK_Up    :  if (FKeyBoardArrows) and
-                     not( Screen.ActiveControl is TCustomGrid )  and
-                     not( Screen.ActiveControl is TCustomComboBox ) then
+                     not( wActiveControl is TCustomGrid )  and
+                     not( wActiveControl is TCustomComboBox ) then
                   begin
                     Msg.wParam := VK_CLEAR;
                     keybd_event(VK_SHIFT,0,0,0);
@@ -395,30 +491,30 @@ begin
 //
 // Mais um codigo em quarentena
 //
-//      if ( Screen.ActiveControl is TCustomEdit ) and
+//      if ( wActiveControl is TCustomEdit ) and
       if ( bCheckClassList ) and ( FAutoSkip ) then
       begin
         { Verifica a propriedade MaxLength }
-        pMaxLengthPropInfo := GetPropInfo( Screen.ActiveControl.ClassInfo, 'MaxLength' );
+        pMaxLengthPropInfo := GetPropInfo( wActiveControl.ClassInfo, 'MaxLength' );
 
         { Verifica a propriedade SelStart }
         { furada, GetPropInfo só trabalha com Published }
-        { pSelStartPropInfo := GetPropInfo( Screen.ActiveControl.ClassInfo, 'SelStart' ); }
+        { pSelStartPropInfo := GetPropInfo( wActiveControl.ClassInfo, 'SelStart' ); }
 
         if ( pMaxLengthPropInfo <> nil ) then
         begin
 
           { Pega os valores das propriedades }
-          intMaxLength := GetOrdProp( Screen.ActiveControl, pMaxLengthPropInfo );
+          intMaxLength := GetOrdProp( wActiveControl, pMaxLengthPropInfo );
 
           //
           // Ainda preciso deixar esse codigo mais bonito :(((
           //
-          if ( Screen.ActiveControl is TCustomComboBox ) then
-            intSelStart  := ( Screen.ActiveControl as TCustomCombobox ).SelStart;
+          if ( wActiveControl is TCustomComboBox ) then
+            intSelStart  := ( wActiveControl as TCustomCombobox ).SelStart;
 
-          if ( Screen.ActiveControl is TCustomEdit ) then
-            intSelStart  := ( Screen.ActiveControl as TCustomEdit).SelStart;
+          if ( wActiveControl is TCustomEdit ) then
+            intSelStart  := ( wActiveControl as TCustomEdit).SelStart;
           // =============================================
 
           if ( intMaxLength <> 0 ) and
@@ -504,6 +600,24 @@ begin
   lHintWindow.Visible := True;
   lHintWindow.ActivateHint(lHintRect, Control.Hint);
 
+end;
+
+function ObjectInheritsFrom(AObj: TObject; AClassName: String): Boolean;
+var
+  ClassType: TClass;
+begin
+  Result := False;
+  ClassType := aObj.ClassType;
+  //Percorre as Classes parents (Classes Pai) verificanso se alguma delas é a passada em ClassName
+  //Fonte: http://docs.embarcadero.com/products/rad_studio/delphiAndcpp2009/HelpUpdate2/EN/html/delphivclwin32/System__TObject__ClassParent.html
+  repeat
+    if LowerCase(ClassType.ClassName) = LowerCase(aClassName) then
+    begin
+      Result := True;
+      Break;
+    end;
+    ClassType := ClassType.ClassParent;
+  until ClassType = nil;
 end;
 
 {******************************************************************************
