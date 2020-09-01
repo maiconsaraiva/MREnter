@@ -28,6 +28,8 @@ Obs: Se você já usa o MREnter, precisará adicionar manualmente as classes da 
 "ClassList" do TMREnter do seu projeto.
 
 Lista de Classes:
+
+```markdown
 ============================
 TcxTextEdit
 TcxComboBox
@@ -68,6 +70,7 @@ TcxDBShellComboBox
 TcxDBImageComboBox
 TcxDBMRUEdit
 TcxDBPopupEdit
+```
 
 Mais detalhes sobre esse comportamento dos componentes da DevExpress (não ser possível acessar pelo ActiveControl) podem ser vistos nos Links abaixo:
 - https://supportcenter.devexpress.com/Ticket/Details/Q271132/how-to-get-real-activecontrol
@@ -90,6 +93,7 @@ Mais detalhes sobre esse comportamento dos componentes da DevExpress (não ser p
 Dica: Se você não utiliza esses componentes, após adicionar o MREnter ao form principal, 
       remova eles de dentro da "ClassList", isso fará a varredura ficar mais rápida.
 //Adicionados os cmponentes da paleta Jedi
+```
 Add('TJvEdit');
 Add('TJvCalcEdit');
 Add('TJvValidateEdit');
@@ -128,6 +132,7 @@ Add('TRzDBCheckBox');
 Add('TRzDBLookupDialog');
 Add('TRzDBRadioGroup');
 Add('TRzDBCheckBoxGroup');  
+```
                      
 ## 26/06/2001 V 2.2                                                    
       
@@ -249,7 +254,8 @@ default é false.
 
 Suporte aos componentes do RxLib:  
   Paulo H. Trentin               
-  www.rantac.com.br/users/phtrentin      
+  www.rantac.com.br/users/phtrentin
+```markdown      
 Add('TRxDBLookupList');             
 Add('TRxDBGrid');                                                   
 Add('TRxDBLookupCombo');       
@@ -260,6 +266,7 @@ Add('TDBDateEdit');
 Add('TRxCalcEdit');                                                 
 Add('TCurrencyEdit');                                               
 Add('TRxLookupEdit');                                               
+```
         
 ## 03/03/1999 V 1.3 
                                                    
@@ -275,7 +282,9 @@ Suporte aos componentes do InfoPower
 Já que tem um monte de gente que usa 
 achei por bem deixar todos disponí-  
 veis durante a criação do componen-  
-te, assim como os outros, ideia do Dennis, valeu. 02/03/1999                       
+te, assim como os outros, ideia do Dennis, valeu. 02/03/1999  
+
+```markdown                     
 TwwDBGrid                      
 TwwDBEdit                      
 TwwDBComboBox                  
@@ -285,7 +294,9 @@ TwwDBLookupCombo
 TwwDBLookupComboDlg                              
 TwwIncrementalSearch           
 TwwDBRitchEdit                                            
-TwwKeyCombo                                                         
+TwwKeyCombo
+```
+
 Neste pacote esta sendo uncluido um arquivo .RES com um icone de    
 instalação do componente que foi feito pelo Mauricio                
 Este arquivo esta em 16 bits por motivo de compatibilidade, caso    
