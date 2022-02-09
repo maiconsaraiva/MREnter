@@ -3,8 +3,9 @@
 interface
 
 uses
+  Biblioteca,
   Messages, WinTypes, WinProcs, SysUtils, Classes, Vcl.Graphics, Vcl.Controls,
-  Vcl.Forms, Vcl.Dialogs, Vcl.stdCtrls, Vcl.DBGRIDS;
+  Vcl.Forms, Vcl.Dialogs, Vcl.stdCtrls, Vcl.DBGRIDS, Variants;
 
 {$R MREnterLib.res}
 
@@ -128,6 +129,9 @@ begin
     Add('TTabbedNoteBook');
     Add('TComboBox');
     Add('TDBComboBox');
+    Add('TSpinEdit');
+    Add('TDBSpinEdit');
+
     //Add('TStringGrid');            { Suporte ao tratamento de Grids       }
     //Add('TDrawGrid');
     //Add('TDBGrid');
@@ -135,6 +139,8 @@ begin
     Add('TDBCheckDocEdit');  { Componente p/ edição de CGC do Roger       }
     Add('TMRDBExtEdit');     { Edit com busca incremental MR              }
     Add('TDBDateEdit');      { Componente p/ edição de datas do Sebastião }
+    Add('TDBLookupComboBox');
+    Add('TLabeledEdit');
     Add('============================');
     //Add('TwwDBGrid');              { Suporte aos componentes do InfoPower }
     Add('TwwDBEdit');              { Já que tem um monte de gente que usa }
@@ -301,22 +307,26 @@ end;
 procedure TMREnter.LocalOnMessage(var Msg: TMsg; var Handled: Boolean);
 var
   pMaxLengthPropInfo,
-  pColorPropInfo,
-  pOnKeyDownPropInfo,
-  pOnKeyPressPropInfo,
-  pColPropInfo,
-  pColCountPropInfo : PPropInfo;
+    pColorPropInfo,
+    pOnKeyDownPropInfo,
+    pOnKeyPressPropInfo,
+    pColPropInfo,
+    pColCountPropInfo,
+    pDroppedDownPropInfo : PPropInfo;
   intMaxLength,
-  intSelStart,
-  intCol,
-  intColCount       : integer;
+    intSelStart,
+    intCol,
+    intColCount       : integer;
   bCheckClassList, Is_cxCustomEdit : Boolean;
-  wActiveControl : TWinControl;
-  Obj : TObject;
+  wActiveControl,
+    cxGridActiveControl : TWinControl;
+  Obj: TObject;
 begin
 
 
   Is_cxCustomEdit := False;
+  cxGridActiveControl := nil;
+
   if Screen.ActiveControl <> nil then
   begin
     bCheckClassList := False;
@@ -347,9 +357,10 @@ begin
           if ObjectInheritsFrom(Screen.ActiveControl.Owner, 'TcxCustomEdit') then
           begin
             bCheckClassList := CheckClassList( Screen.ActiveControl.Owner.ClassName );
+            cxGridActiveControl := Screen.ActiveControl;
+            Is_cxCustomEdit := True;
             if bCheckClassList then
               wActiveControl := Screen.ActiveControl.Owner as TWinControl; //ActiveControl da DevExpress
-            Is_cxCustomEdit := True;
           end;
   end
   else
@@ -458,17 +469,49 @@ begin
                     pOnKeyDownPropInfo := GetPropInfo( wActiveControl, 'OnKeyDown' );
                     pOnKeyPressPropInfo:= GetPropInfo( wActiveControl, 'OnKeyPress' );
 
-                    if ( wActiveControl is TCustomComboBox ) then
+                    if (wActiveControl is TCustomComboBox) then
                     begin
-                      if not ( wActiveControl as TCustomComboBox ).DroppedDown then Msg.wParam := VK_TAB;
+                      if not (wActiveControl as TCustomComboBox).DroppedDown then
+                        Msg.wParam := VK_TAB
+                    end
+                    else if (wActiveControl is TCustomDBLookupComboBox) then
+                    begin
+                      if not (wActiveControl as TCustomDBLookupComboBox).ListVisible then
+                        Msg.wParam := VK_TAB;
                     end
                     else
-                      if ( pOnKeyDownPropInfo <> nil ) and (pOnKeyPressPropInfo <> nil) then
+                      if (pOnKeyDownPropInfo <> nil ) and (pOnKeyPressPropInfo <> nil) then
                       begin
-                        if ( GetOrdProp( wActiveControl, pOnKeyDownPropInfo ) = 0 )
-                          and ( GetOrdProp( wActiveControl, pOnKeyPressPropInfo ) = 0 )
+                        //Aciona o tab automático, apenas se não houver código em um dos eventos KeyDown/KeyPress
+                        if (GetOrdProp( wActiveControl, pOnKeyDownPropInfo ) = 0)
+                          and (GetOrdProp( wActiveControl, pOnKeyPressPropInfo ) = 0)
                         then
-                          Msg.wParam := VK_TAB;
+                        begin
+                          {Não deu certo!
+
+                          if Is_cxCustomEdit then
+                          begin
+                            Ajuda(Biblioteca.GetPropriedadesEValoresObjeto(cxGridActiveControl.Parent).Text);
+                            //Verifica se existe uma propriedade DroppedDown e se ela está setada para True. Se estiver,
+                            //significa que o DropDown do componente está aberto, então não aciona o Tab.
+                            //Foi testado com o componnte TcxLookupComboBox
+                            pDroppedDownPropInfo := GetPropInfo(cxGridActiveControl, 'DroppedDown');
+                            if (pDroppedDownPropInfo <> nil) and IsPublishedProp(cxGridActiveControl, 'DroppedDown') then
+                            begin
+                              if UpperCase(VarToStr(GetPropValue(cxGridActiveControl, pDroppedDownPropInfo, True))) = 'TRUE' then
+                                Msg.wParam := VK_TAB;
+                            end
+                            else
+                              Msg.wParam := VK_TAB;
+                          end
+                          else}
+                            Msg.wParam := VK_TAB;
+                        end;
+                      end
+                      else
+                      begin
+                        //Não possui as propriedades OnKeyDown e OnKeyPress, mas ainda assim pode receber o comportamento.
+                        Msg.wParam := VK_TAB;
                       end;
 
                   end;
@@ -608,7 +651,9 @@ var
 begin
   Result := False;
   ClassType := aObj.ClassType;
-  //Percorre as Classes parents (Classes Pai) verificanso se alguma delas é a passada em ClassName
+  {Percorre as Classes parents (Classes Pai) verificanso se alguma delas é a passada em ClassName
+   É útil para verificar se um componente herda de uma determinada Classe, mas passando o nome da classe pai como String,
+   eu não preciso ter a unit da classe que quero verificar declarada aqui.}
   //Fonte: http://docs.embarcadero.com/products/rad_studio/delphiAndcpp2009/HelpUpdate2/EN/html/delphivclwin32/System__TObject__ClassParent.html
   repeat
     if LowerCase(ClassType.ClassName) = LowerCase(aClassName) then

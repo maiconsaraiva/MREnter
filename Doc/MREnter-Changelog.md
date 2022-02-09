@@ -14,7 +14,8 @@
            Dennis Rosa (dra@svn.com.br)                                
            Mauricio Rother (mrother@plugon.com.br)                     
            Paulo H. Trentin (phtrentin@feob.br)                        
-           Fernando Sarturi Prass (prass@unifra.br)                    
+           Fernando Sarturi Prass (prass@unifra.br) 
+           Maicon Saraiva                   
 ```
 
 ------------
@@ -22,10 +23,17 @@
 
 # Historico / ChangeLog  
 
+## 09/02/2022 - v 2.5
++ Adicionadas as classes abaixo como padrão na inicialização do componente:
+TSpinEdit, TDBSpinEdit, TDBLookupComboBox, TLabeledEdit
+
++ Melhoria para permitir que componentes que não possuem as properties "OnKeyDown" e "OnKeyPress", possam também receber o comportamento "Enter as Tab".
+O TPageControl por exemplo, possui a propriedade "TabStop" (permitindo foco), mas não possui "OnKeyDown" ou "OnKeyPress", e o Enter as Tab não funcionava nesse tipo de componente.
+Com esta melhoria, bata incluir na lista de classes (ClassList do TMREnter adicionado ao seu projeto) que o "Enter as Tab" irá funcionar normalmente.
+
 ## 31/08/2020 - v 2.4
 + Adicionado o suporte aos componentes da DevExpress (eles não são capturados pelo ActiveControl como os demais, por isso, precisaram de um tratamento especial)
-Obs: Se você já usa o MREnter, precisará adicionar manualmente as classes da DevExpress (que deseja que o MREnter controle) dentro da propriedade 
-"ClassList" do TMREnter do seu projeto.
+Obs: Se você já usa o MREnter, precisará adicionar manualmente as classes da DevExpress (que deseja que o MREnter controle) dentro da propriedade "ClassList" do TMREnter do seu projeto.
 
 Lista de Classes:
 

@@ -16,7 +16,7 @@ uses
   MREnterLib, ShellApi;
 
 const
-  IdVersion = '2.4';
+  IdVersion = '2.5';
 
 procedure Register;
 begin
