@@ -3,7 +3,6 @@
 interface
 
 uses
-  Biblioteca,
   Messages, WinTypes, WinProcs, SysUtils, Classes, Vcl.Graphics, Vcl.Controls,
   Vcl.Forms, Vcl.Dialogs, Vcl.stdCtrls, Vcl.DBGRIDS, Variants;
 
